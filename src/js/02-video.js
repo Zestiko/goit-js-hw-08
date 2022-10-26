@@ -1,12 +1,14 @@
-import Vimeo from '@vimeo/player'
+import Player from '@vimeo/player'
+const iframe = document.querySelector('iframe');
+const player = new Player(iframe);
+console.log(iframe)
 
- const iframe = document.querySelector('iframe');
-    const player = new Vimeo.Player(iframe);
+function onPlay(event) {
+    console.log(event.seconds);
+    let currentTime = event.seconds;
+    console.log(currentTime);
+    localStorage.setItem("videoplayer-current-time", currentTime);
+    
+};
 
-    player.on('play', function() {
-        console.log('played the video!');
-    });
-
-    player.getVideoTitle().then(function(title) {
-        console.log('title:', title);
-    });
+player.on('timeupdate', onPlay);
