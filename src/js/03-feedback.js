@@ -4,20 +4,20 @@ const refs = {
     input: document.querySelector('.feedback-form input'),
     textarea: document.querySelector('.feedback-form textarea')
 }
-
+const saveData = {
+};
 const STORAGE_KEY = "feedback-form-state";
 console.log(refs.textarea)
 refs.form.addEventListener('submit', onFormSubmit);
-refs.input.addEventListener('input', throttle(onFormInput, 1000));
-refs.textarea.addEventListener('input', throttle(onFormTextarea,1000));
+refs.input.addEventListener('input', throttle(onFormInput, 500));
+refs.textarea.addEventListener('input', throttle(onFormTextarea, 500));
 
-const saveData = {
-};
+
 
 function onFormInput(e) {
-    const email = e.currentTarget.value;
+    let email = e.target.value;
     saveData.email = email;
-    // console.log(saveData.email)
+    console.log(email)
     localStorage.setItem(STORAGE_KEY, JSON.stringify(saveData))
 
 }
@@ -25,31 +25,27 @@ function onFormInput(e) {
 function onFormSubmit(e) {
     e.preventDefault();
     const finishValues = localStorage.getItem(STORAGE_KEY)
-    const finishValuesPars = JSON.parse(finishValues);
-    console.log(finishValuesPars)
-  
+    if (finishValues) {
+        const finishValuesPars = JSON.parse(finishValues);
+        console.log(finishValuesPars)
+    }
     localStorage.removeItem(STORAGE_KEY);
-     refs.input.value = "";
-    refs.textarea.value = "";
+    e.target.reset();
 }
 
 function onFormTextarea(e) {
-    
-    const massage = e.currentTarget.value;
+    let massage = e.target.value;
+    console.log(massage)
     saveData.massage = massage;
-     localStorage.setItem(STORAGE_KEY, JSON.stringify(saveData))
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(saveData))
 }
 
-function getDataFromLocalStorege() {
-    
+function getDataFromLocalStorege() {   
     const values = localStorage.getItem(STORAGE_KEY)
     if (values) {
         const valuesPars = JSON.parse(values);
-    console.log(values)
-    console.log(valuesPars)
-
-    refs.input.value = valuesPars.email;
-    refs.textarea.value = valuesPars.massage;
+        refs.input.value = valuesPars.email;
+        refs.textarea.value = valuesPars.massage;
     }
     
 }
